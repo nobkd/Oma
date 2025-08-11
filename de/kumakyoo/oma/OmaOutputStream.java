@@ -54,19 +54,25 @@ public class OmaOutputStream extends DataOutputStream
 
     public void writeSmallInt(int value) throws IOException
     {
-        if (value<255)
-            writeByte(value);
-        else
+        if (value>=0)
         {
-            writeByte(255);
-            if (value<65535)
-                writeShort(value);
-            else
+            if (value<255)
             {
-                writeShort(65535);
-                writeInt(value);
+                writeByte(value);
+                return;
+            }
+
+            writeByte(255);
+
+            if (value<65535)
+            {
+                writeShort(value);
+                return;
             }
         }
+
+        writeShort(65535);
+        writeInt(value);
     }
 
     public void writeString(String s) throws IOException
